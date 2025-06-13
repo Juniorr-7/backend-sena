@@ -12,3 +12,28 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model aplicativos {
+  idAplicativo Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  roles roles[]
+  usuarios usuarios[]
+}
+
+model roles {
+  idRol Int @id @default(autoincrement())
+  nombre String @db.VarChar(20)
+  idAplicativo Int
+  aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
+  usuarios usuarios[]
+}
+
+model usuarios {
+ idUsuario Int @id @default(autoincrement())
+ login String @db.VarChar(30)
+ password String @db.VarChar(20)
+ idAplicativo Int
+ idRol Int
+ aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
+ rol roles @relation(fields: [idRol], references: [idRol])
+}
