@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // Importación dinámica de rutas
-const routersPath = path.join(__dirname, 'routers');
+const routersPath = path.join(__dirname, 'src/routers');
 
 fs.readdirSync(routersPath).forEach(async (file) => {
   if (file.endsWith('.js')) {
