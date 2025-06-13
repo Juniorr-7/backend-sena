@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, pathToFileURL } from 'url';
 
 dotenv.config();
 
@@ -16,7 +16,9 @@ const routersPath = path.join(__dirname, 'src/routers');
 
 fs.readdirSync(routersPath).forEach(async (file) => {
   if (file.endsWith('.js')) {
-    const { default: router } = await import(path.join(routersPath, file));
+    const filePath = path.join(routersPath, file);
+    const fileUrl = pathToFileURL(filePath);
+    const { default: router } = await import(fileUrl.href);
     app.use(router);
   }
 });
