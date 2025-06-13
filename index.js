@@ -18,8 +18,8 @@ fs.readdirSync(routersPath).forEach(async (file) => {
   if (file.endsWith('.js')) {
     const filePath = path.join(routersPath, file);
     const fileUrl = pathToFileURL(filePath);
-    const { default: router } = await import(fileUrl.href);
-    app.use(router);
+    const { default: { router, prefix } } = await import(fileUrl.href);
+    app.use('/api' + prefix, router);
   }
 });
 
