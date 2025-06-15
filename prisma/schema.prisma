@@ -18,6 +18,7 @@ model aplicativos {
   nombre String @db.VarChar(50)
   roles roles[]
   usuarios usuarios[]
+  modulos modulos[]
 }
 
 model roles {
@@ -26,6 +27,7 @@ model roles {
   idAplicativo Int
   aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
   usuarios usuarios[]
+  permisos permisos[]
 }
 
 model usuarios {
@@ -36,4 +38,30 @@ model usuarios {
  idRol Int
  aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
  rol roles @relation(fields: [idRol], references: [idRol])
+}
+
+model modulos {
+  idModulo Int @id @default(autoincrement())
+  idAplicativo Int
+  modulo String @db.VarChar(50)
+  aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
+  rutas rutas[]
+}
+
+model rutas {
+  idRuta Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  url String @db.VarChar(100)
+  idModulo Int
+  modulo modulos @relation(fields: [idModulo], references: [idModulo])
+  permisos permisos[]
+}
+
+model permisos {
+  idPermiso Int @id @default(autoincrement())
+  usuario Int
+  idRol Int
+  idRuta Int
+  rol roles @relation(fields: [idRol], references: [idRol])
+  ruta rutas @relation(fields: [idRuta], references: [idRuta])
 }
