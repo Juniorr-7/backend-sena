@@ -32,7 +32,7 @@ model roles {
 
 model usuarios {
  idUsuario Int @id @default(autoincrement())
- login String @db.VarChar(30)
+ login String @db.VarChar(30) @unique
  password String @db.VarChar(20)
  idAplicativo Int
  idRol Int
