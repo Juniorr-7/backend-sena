@@ -18,7 +18,7 @@ router.post('/', createAplicativo);
 router.put('/:id', updateAplicativo);
 router.delete('/:id', deleteAplicativo);
 
-// Relaciones con paginación opcional
+// Relaciones
 router.get('/:id/roles', getRolesByAplicativoId);
 router.get('/:id/usuarios', getUsuariosByAplicativoId);
 
