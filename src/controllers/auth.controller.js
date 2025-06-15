@@ -42,7 +42,7 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
     const token = req.header("authorization")?.split(" ")[1];
     try{
-        await prisma.accesos.update({
+        await prisma.accesos.updateMany({
             where: {
                 token: token
             },
@@ -51,6 +51,7 @@ const logout = async (req, res) => {
                 estado: "inactivo"
             }
         })
+        res.status(200).json({ message: 'Sesion cerrada' });
     }
     catch(error){
         res.status(500).json({ error: 'Error cerrando sesión' });
