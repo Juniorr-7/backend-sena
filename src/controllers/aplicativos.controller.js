@@ -145,7 +145,7 @@ const getRolesByAplicativoId = async (req, res) => {
     }
 
     const total = await prisma.roles.count({
-      where: { aplicativosId: parseInt(id) },
+      where: { idAplicativo: parseInt(id) },
     });
 
     res.json({
@@ -183,7 +183,7 @@ const getUsuariosByAplicativoId = async (req, res) => {
     }
 
     const total = await prisma.usuarios.count({
-      where: { aplicativosId: parseInt(id) },
+      where: { idAplicativo: parseInt(id) },
     });
 
     res.json({
