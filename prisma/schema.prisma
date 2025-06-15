@@ -38,6 +38,7 @@ model usuarios {
  idRol Int
  aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
  rol roles @relation(fields: [idRol], references: [idRol])
+ accesos accesos[]
 }
 
 model modulos {
@@ -64,4 +65,129 @@ model permisos {
   idRuta Int
   rol roles @relation(fields: [idRol], references: [idRol])
   ruta rutas @relation(fields: [idRuta], references: [idRuta])
+}
+
+enum estado {
+  activo
+  inactivo
+}
+
+model accesos {
+  idAcceso Int @id @default(autoincrement())
+  token String @db.VarChar(200)
+  idUsuario Int
+  fechaIngreso DateTime @default(now())
+  fechaSalida DateTime?
+  estado estado @default(activo)
+  usuario usuarios @relation(fields: [idUsuario], references: [idUsuario])
+}
+
+model departamentos {
+  idDepartamento Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  municipios municipios[]
+}
+
+model municipios {
+  idMunicipio Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  idDepartamento Int
+  departamento departamentos @relation(fields: [idDepartamento], references: [idDepartamento])
+  ambientes ambientes[]
+}
+
+enum genero {
+  masculino
+  femenino
+}
+
+enum cargo {
+  instructor
+  aprendiz
+  coordinador
+  secretaria
+  lider
+  vocero
+}
+
+model personas {
+  idPersona Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  telefono String @db.VarChar(20)
+  direccion String @db.VarChar(50)
+  correo String @db.VarChar(50)
+  genero genero
+  idMunicipio Int
+  cargo cargo
+  estado estado @default(activo)
+  curso cursos?
+  matricula matriculas?
+}
+
+model centroFormacion {
+  idCentro Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  sedes sedes[]
+}
+
+model sedes {
+  idSede Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  idCentro Int
+  centroFormacion centroFormacion @relation(fields: [idCentro], references: [idCentro])
+  ambientes ambientes[]
+  areas areas[]
+}
+
+model ambientes {
+  idAmbiente Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  idMunicipio Int
+  idSede Int
+  municipio municipios @relation(fields: [idMunicipio], references: [idMunicipio])
+  sede sedes @relation(fields: [idSede], references: [idSede])
+}
+
+model areas {
+  idArea Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  idSede Int
+  sede sedes @relation(fields: [idSede], references: [idSede])
+  cursos cursos[]
+}
+
+enum tipo {
+  tic
+  agricola
+  administrativo
+}
+
+model programas {
+  idPrograma Int @id @default(autoincrement())
+  nombre String @db.VarChar(50)
+  tipo tipo
+  cursos cursos[]
+}
+
+model cursos {
+  idCurso Int @id @default(autoincrement())
+  codigo Int
+  fechaInicio DateTime
+  fechaFin DateTime
+  finLectiva DateTime
+  idArea Int
+  idPrograma Int
+  idPersona Int @unique
+  area areas @relation(fields: [idArea], references: [idArea])
+  programa programas @relation(fields: [idPrograma], references: [idPrograma])
+  lider personas @relation(fields: [idPersona], references: [idPersona])
+  matriculas matriculas[]
+}
+
+model matriculas {
+  idMatricula Int @id @default(autoincrement())
+  idPersona Int @unique
+  idCurso Int
+  persona personas @relation(fields: [idPersona], references: [idPersona])
+  curso cursos @relation(fields: [idCurso], references: [idCurso])
 }
