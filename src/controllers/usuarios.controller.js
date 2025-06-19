@@ -52,15 +52,15 @@ const getUsuarioById = async (req, res) => {
 // 3. Crear un nuevo usuario
 
 const createUsuario = async (req, res) => {
-  const { login, password, idAplicativo, idRol } = req.body;
+  const { login, password, idPersona, idAplicativo, idRol } = req.body;
 
   try {
-    if (!login || login.length > 30 || !password || password.length > 20) {
+    if (!login || login.length > 30 || !password || password.length > 20 || !idPersona) {
       return res.status(400).json({ error: 'Login y password son requeridos con longitudes válidas' });
     }
 
     const nuevo = await prisma.usuarios.create({
-      data: { login, password, idAplicativo, idRol },
+      data: { login, password, idPersona, idAplicativo, idRol },
     });
 
     res.status(201).json(nuevo);
@@ -73,9 +73,9 @@ const createUsuario = async (req, res) => {
 
 const updateUsuario = async (req, res) => {
   const { id } = req.params;
-  const { login, password, idAplicativo, idRol } = req.body;
+  const { login, password, idPersona, idAplicativo, idRol } = req.body;
 
-  if (!login || login.length > 30 || !password || password.length > 20) {
+  if (!login || login.length > 30 || !password || password.length > 20, idPersona) {
     return res.status(400).json({ error: 'Login y password son requeridos con longitudes válidas' });
   }
 
@@ -90,7 +90,7 @@ const updateUsuario = async (req, res) => {
 
     const actualizado = await prisma.usuarios.update({
       where: { idUsuario: parseInt(id) },
-      data: { login, password, idAplicativo, idRol },
+      data: { login, password, idPersona, idAplicativo, idRol },
     });
 
     res.json(actualizado);
