@@ -36,6 +36,8 @@ model usuarios {
  password String @db.VarChar(20)
  idAplicativo Int
  idRol Int
+ idPersona Int @unique
+ persona personas @relation(fields: [idPersona], references: [idPersona])
  aplicativo aplicativos @relation(fields: [idAplicativo], references: [idAplicativo])
  rol roles @relation(fields: [idRol], references: [idRol])
  accesos accesos[]
@@ -94,6 +96,7 @@ model municipios {
   idDepartamento Int
   departamento departamentos @relation(fields: [idDepartamento], references: [idDepartamento])
   ambientes ambientes[]
+  personas personas[]
 }
 
 enum genero {
@@ -116,8 +119,10 @@ model personas {
   telefono String @db.VarChar(20)
   direccion String @db.VarChar(50)
   correo String @db.VarChar(50)
-  genero genero
   idMunicipio Int
+  municipio municipios @relation(fields: [idMunicipio], references: [idMunicipio])
+  genero genero
+  usuario usuarios?
   cargo cargo
   estado estado @default(activo)
   curso cursos?
