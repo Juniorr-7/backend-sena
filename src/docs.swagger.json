@@ -1,0 +1,2539 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "BACKEND SENA",
+    "version": "1.0.0",
+    "description": "Este es el BackEnd del sistema principal de administración del SENA"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Servidor local"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/ambientes": {
+      "get": {
+        "tags": ["Ambientes"],
+        "summary": "Obtener todos los ambientes con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de resultados por página",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de ambientes paginada"
+          },
+          "500": {
+            "description": "Error al obtener los ambientes"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Ambientes"],
+        "summary": "Crear un nuevo ambiente",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "idMunicipio": { "type": "integer" },
+                  "idSede": { "type": "integer" }
+                },
+                "required": ["nombre", "idMunicipio", "idSede"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Ambiente creado exitosamente" },
+          "500": { "description": "Error al crear el ambiente" }
+        }
+      }
+    },
+    "/ambientes/{id}": {
+      "get": {
+        "tags": ["Ambientes"],
+        "summary": "Obtener un ambiente por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Ambiente encontrado" },
+          "404": { "description": "Ambiente no encontrado" },
+          "500": { "description": "Error al buscar el ambiente" }
+        }
+      },
+      "put": {
+        "tags": ["Ambientes"],
+        "summary": "Actualizar un ambiente por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "idMunicipio": { "type": "integer" },
+                  "idSede": { "type": "integer" }
+                },
+                "required": ["nombre", "idMunicipio", "idSede"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ambiente actualizado exitosamente" },
+          "404": { "description": "Ambiente no encontrado" },
+          "500": { "description": "Error al actualizar el ambiente" }
+        }
+      },
+      "delete": {
+        "tags": ["Ambientes"],
+        "summary": "Eliminar un ambiente por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Ambiente eliminado correctamente" },
+          "404": { "description": "Ambiente no encontrado" },
+          "500": { "description": "Error al eliminar el ambiente" }
+        }
+      }
+    },
+    "/ambientes/{id}/municipio": {
+      "get": {
+        "tags": ["Ambientes"],
+        "summary": "Obtener el municipio asociado a un ambiente",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Municipio del ambiente" },
+          "404": { "description": "Ambiente no encontrado" },
+          "500": { "description": "Error al obtener el municipio del ambiente" }
+        }
+      }
+    },
+    "/ambientes/{id}/sede": {
+      "get": {
+        "tags": ["Ambientes"],
+        "summary": "Obtener la sede asociada a un ambiente",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Sede del ambiente" },
+          "404": { "description": "Ambiente no encontrado" },
+          "500": { "description": "Error al obtener la sede del ambiente" }
+        }
+      }
+    },
+    "/aplicativos": {
+      "get": {
+        "tags": ["Aplicativos"],
+        "summary": "Obtener todos los aplicativos con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de resultados por página",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de aplicativos paginada" },
+          "500": { "description": "Error al obtener los aplicativos" }
+        }
+      },
+      "post": {
+        "tags": ["Aplicativos"],
+        "summary": "Crear un nuevo aplicativo",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Aplicativo creado exitosamente" },
+          "400": { "description": "Nombre inválido" },
+          "500": { "description": "Error al crear el aplicativo" }
+        }
+      }
+    },
+    "/aplicativos/{id}": {
+      "get": {
+        "tags": ["Aplicativos"],
+        "summary": "Obtener un aplicativo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Aplicativo encontrado" },
+          "404": { "description": "Aplicativo no encontrado" },
+          "500": { "description": "Error al buscar el aplicativo" }
+        }
+      },
+      "put": {
+        "tags": ["Aplicativos"],
+        "summary": "Actualizar un aplicativo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Aplicativo actualizado exitosamente" },
+          "400": { "description": "Nombre inválido" },
+          "404": { "description": "Aplicativo no encontrado" },
+          "500": { "description": "Error al actualizar el aplicativo" }
+        }
+      },
+      "delete": {
+        "tags": ["Aplicativos"],
+        "summary": "Eliminar un aplicativo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Aplicativo eliminado correctamente" },
+          "404": { "description": "Aplicativo no encontrado" },
+          "500": { "description": "Error al eliminar el aplicativo" }
+        }
+      }
+    },
+    "/aplicativos/{id}/roles": {
+      "get": {
+        "tags": ["Aplicativos"],
+        "summary": "Obtener los roles relacionados a un aplicativo",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de roles del aplicativo paginada" },
+          "404": { "description": "Aplicativo no encontrado" },
+          "500": { "description": "Error al obtener los roles del aplicativo" }
+        }
+      }
+    },
+    "/aplicativos/{id}/usuarios": {
+      "get": {
+        "tags": ["Aplicativos"],
+        "summary": "Obtener los usuarios relacionados a un aplicativo",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de usuarios del aplicativo paginada" },
+          "404": { "description": "Aplicativo no encontrado" },
+          "500": {
+            "description": "Error al obtener los usuarios del aplicativo"
+          }
+        }
+      }
+    },
+    "/areas": {
+      "get": {
+        "tags": ["Áreas"],
+        "summary": "Obtener todas las áreas con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Número de página",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Cantidad de resultados por página",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de áreas paginada" },
+          "500": { "description": "Error al obtener las áreas" }
+        }
+      },
+      "post": {
+        "tags": ["Áreas"],
+        "summary": "Crear una nueva área",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "idSede": { "type": "integer" }
+                },
+                "required": ["nombre", "idSede"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Área creada exitosamente" },
+          "404": { "description": "No existe la sede" },
+          "500": { "description": "Error al crear el área" }
+        }
+      }
+    },
+    "/areas/{id}": {
+      "get": {
+        "tags": ["Áreas"],
+        "summary": "Obtener un área por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Área encontrada" },
+          "404": { "description": "Área no encontrada" },
+          "500": { "description": "Error al buscar el área" }
+        }
+      },
+      "put": {
+        "tags": ["Áreas"],
+        "summary": "Actualizar un área por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "idSede": { "type": "integer" }
+                },
+                "required": ["nombre", "idSede"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Área actualizada exitosamente" },
+          "404": { "description": "Área no encontrada" },
+          "500": { "description": "Error al actualizar el área" }
+        }
+      },
+      "delete": {
+        "tags": ["Áreas"],
+        "summary": "Eliminar un área por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Área eliminada correctamente" },
+          "404": { "description": "Área no encontrada" },
+          "500": { "description": "Error al eliminar el área" }
+        }
+      }
+    },
+    "/areas/{id}/sede": {
+      "get": {
+        "tags": ["Áreas"],
+        "summary": "Obtener la sede relacionada a un área",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Sede del área encontrada" },
+          "404": { "description": "Área no encontrada" },
+          "500": { "description": "Error al obtener la sede del área" }
+        }
+      }
+    },
+    "/areas/{id}/cursos": {
+      "get": {
+        "tags": ["Áreas"],
+        "summary": "Obtener los cursos asociados a un área",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de cursos del área paginada" },
+          "404": { "description": "Área no encontrada" },
+          "500": { "description": "Error al obtener los cursos del área" }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Autenticación"],
+        "summary": "Iniciar sesión de usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["login", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inicio de sesión exitoso, token generado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Faltan datos requeridos" },
+          "401": { "description": "Contraseña incorrecta" },
+          "404": { "description": "Usuario no encontrado" },
+          "500": { "description": "Error iniciando sesión" }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Autenticación"],
+        "summary": "Cerrar sesión del usuario",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Sesión cerrada exitosamente" },
+          "500": { "description": "Error cerrando sesión" }
+        }
+      }
+    },
+    "/centros": {
+      "get": {
+        "tags": ["Centros de Formación"],
+        "summary": "Obtener todos los centros de formación con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de centros de formación paginada" },
+          "500": { "description": "Error al obtener los centros de formación" }
+        }
+      },
+      "post": {
+        "tags": ["Centros de Formación"],
+        "summary": "Crear un nuevo centro de formación",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Centro creado exitosamente" },
+          "400": { "description": "El nombre es obligatorio" },
+          "500": { "description": "Error al crear el centro de formación" }
+        }
+      }
+    },
+    "/centros/{id}": {
+      "get": {
+        "tags": ["Centros de Formación"],
+        "summary": "Obtener un centro de formación por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Centro encontrado" },
+          "404": { "description": "Centro no encontrado" },
+          "500": { "description": "Error al buscar el centro" }
+        }
+      },
+      "put": {
+        "tags": ["Centros de Formación"],
+        "summary": "Actualizar un centro de formación por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Centro actualizado exitosamente" },
+          "404": { "description": "Centro no encontrado" },
+          "500": { "description": "Error al actualizar el centro" }
+        }
+      },
+      "delete": {
+        "tags": ["Centros de Formación"],
+        "summary": "Eliminar un centro de formación por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Centro eliminado correctamente" },
+          "404": { "description": "Centro no encontrado" },
+          "500": { "description": "Error al eliminar el centro" }
+        }
+      }
+    },
+    "/centros/{id}/sedes": {
+      "get": {
+        "tags": ["Centros de Formación"],
+        "summary": "Obtener las sedes asociadas a un centro",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de sedes asociadas al centro" },
+          "404": { "description": "Centro no encontrado" },
+          "500": { "description": "Error al obtener las sedes del centro" }
+        }
+      }
+    },
+    "/cursos": {
+      "get": {
+        "tags": ["Cursos"],
+        "summary": "Obtener todos los cursos con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de cursos" },
+          "500": { "description": "Error al obtener los cursos" }
+        }
+      },
+      "post": {
+        "tags": ["Cursos"],
+        "summary": "Crear un nuevo curso",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigo": { "type": "string" },
+                  "fechaInicio": { "type": "string", "format": "date" },
+                  "fechaFin": { "type": "string", "format": "date" },
+                  "finLectiva": { "type": "string", "format": "date" },
+                  "idArea": { "type": "integer" },
+                  "idPrograma": { "type": "integer" },
+                  "idPersona": { "type": "integer" }
+                },
+                "required": [
+                  "codigo",
+                  "fechaInicio",
+                  "fechaFin",
+                  "finLectiva",
+                  "idArea",
+                  "idPrograma",
+                  "idPersona"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Curso creado exitosamente" },
+          "400": { "description": "Todos los campos son requeridos" },
+          "500": { "description": "Error al crear el curso" }
+        }
+      }
+    },
+    "/cursos/{id}": {
+      "get": {
+        "tags": ["Cursos"],
+        "summary": "Obtener curso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Curso encontrado" },
+          "404": { "description": "Curso no encontrado" },
+          "500": { "description": "Error al buscar el curso" }
+        }
+      },
+      "put": {
+        "tags": ["Cursos"],
+        "summary": "Actualizar curso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "codigo": { "type": "string" },
+                  "fechaInicio": { "type": "string", "format": "date" },
+                  "fechaFin": { "type": "string", "format": "date" },
+                  "finLectiva": { "type": "string", "format": "date" },
+                  "idArea": { "type": "integer" },
+                  "idPrograma": { "type": "integer" },
+                  "idPersona": { "type": "integer" }
+                },
+                "required": [
+                  "codigo",
+                  "fechaInicio",
+                  "fechaFin",
+                  "finLectiva",
+                  "idArea",
+                  "idPrograma",
+                  "idPersona"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Curso actualizado exitosamente" },
+          "400": { "description": "Todos los campos son requeridos" },
+          "404": { "description": "Curso no encontrado" },
+          "500": { "description": "Error al actualizar el curso" }
+        }
+      },
+      "delete": {
+        "tags": ["Cursos"],
+        "summary": "Eliminar curso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Curso eliminado correctamente" },
+          "404": { "description": "Curso no encontrado" },
+          "500": { "description": "Error al eliminar el curso" }
+        }
+      }
+    },
+    "/cursos/{id}/matriculas": {
+      "get": {
+        "tags": ["Cursos"],
+        "summary": "Obtener matrículas asociadas a un curso",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de matrículas del curso" },
+          "404": { "description": "Curso no encontrado" },
+          "500": { "description": "Error al obtener las matrículas del curso" }
+        }
+      }
+    },
+    "/departamentos": {
+      "get": {
+        "tags": ["Departamentos"],
+        "summary": "Obtener todos los departamentos con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de departamentos" },
+          "500": { "description": "Error al obtener los departamentos" }
+        }
+      },
+      "post": {
+        "tags": ["Departamentos"],
+        "summary": "Crear un nuevo departamento",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Departamento creado exitosamente" },
+          "400": { "description": "Nombre inválido" },
+          "500": { "description": "Error al crear el departamento" }
+        }
+      }
+    },
+    "/departamentos/{id}": {
+      "get": {
+        "tags": ["Departamentos"],
+        "summary": "Obtener departamento por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Departamento encontrado" },
+          "404": { "description": "Departamento no encontrado" },
+          "500": { "description": "Error al buscar el departamento" }
+        }
+      },
+      "put": {
+        "tags": ["Departamentos"],
+        "summary": "Actualizar un departamento por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Departamento actualizado" },
+          "400": { "description": "Nombre inválido" },
+          "404": { "description": "Departamento no encontrado" },
+          "500": { "description": "Error al actualizar el departamento" }
+        }
+      },
+      "delete": {
+        "tags": ["Departamentos"],
+        "summary": "Eliminar un departamento por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Departamento eliminado correctamente" },
+          "404": { "description": "Departamento no encontrado" },
+          "500": { "description": "Error al eliminar el departamento" }
+        }
+      }
+    },
+    "/matriculas": {
+      "get": {
+        "tags": ["Matrículas"],
+        "summary": "Obtener todas las matrículas con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de matrículas" },
+          "500": { "description": "Error al obtener las matrículas" }
+        }
+      },
+      "post": {
+        "tags": ["Matrículas"],
+        "summary": "Crear una nueva matrícula",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idPersona": { "type": "integer" },
+                  "idCurso": { "type": "integer" }
+                },
+                "required": ["idPersona", "idCurso"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Matrícula creada exitosamente" },
+          "400": { "description": "Ya existe una matrícula para esta persona" },
+          "500": { "description": "Error al crear la matrícula" }
+        }
+      }
+    },
+    "/matriculas/{id}": {
+      "get": {
+        "tags": ["Matrículas"],
+        "summary": "Obtener matrícula por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Matrícula encontrada" },
+          "404": { "description": "Matrícula no encontrada" },
+          "500": { "description": "Error al buscar la matrícula" }
+        }
+      },
+      "put": {
+        "tags": ["Matrículas"],
+        "summary": "Actualizar una matrícula por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idPersona": { "type": "integer" },
+                  "idCurso": { "type": "integer" }
+                },
+                "required": ["idPersona", "idCurso"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Matrícula actualizada" },
+          "404": { "description": "Matrícula no encontrada" },
+          "500": { "description": "Error al actualizar la matrícula" }
+        }
+      },
+      "delete": {
+        "tags": ["Matrículas"],
+        "summary": "Eliminar una matrícula por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Matrícula eliminada correctamente" },
+          "404": { "description": "Matrícula no encontrada" },
+          "500": { "description": "Error al eliminar la matrícula" }
+        }
+      }
+    },
+    "/matriculas/{id}/curso": {
+      "get": {
+        "tags": ["Matrículas"],
+        "summary": "Obtener el curso relacionado a una matrícula",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Curso de la matrícula encontrado" },
+          "404": { "description": "Matrícula no encontrada" },
+          "500": { "description": "Error al obtener el curso de la matrícula" }
+        }
+      }
+    },
+    "/matriculas/{id}/persona": {
+      "get": {
+        "tags": ["Matrículas"],
+        "summary": "Obtener la persona relacionada a una matrícula",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Persona de la matrícula encontrada" },
+          "404": { "description": "Matrícula no encontrada" },
+          "500": {
+            "description": "Error al obtener la persona de la matrícula"
+          }
+        }
+      }
+    },
+    "/modulos": {
+      "get": {
+        "tags": ["Módulos"],
+        "summary": "Obtener todos los módulos con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de módulos" },
+          "500": { "description": "Error al obtener los módulos" }
+        }
+      },
+      "post": {
+        "tags": ["Módulos"],
+        "summary": "Crear un nuevo módulo",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "modulo": { "type": "string", "maxLength": 50 },
+                  "idAplicativo": { "type": "integer" }
+                },
+                "required": ["modulo", "idAplicativo"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Módulo creado exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el módulo" }
+        }
+      }
+    },
+    "/modulos/{id}": {
+      "get": {
+        "tags": ["Módulos"],
+        "summary": "Obtener un módulo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Módulo encontrado" },
+          "404": { "description": "Módulo no encontrado" },
+          "500": { "description": "Error al buscar el módulo" }
+        }
+      },
+      "put": {
+        "tags": ["Módulos"],
+        "summary": "Actualizar un módulo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "modulo": { "type": "string", "maxLength": 50 },
+                  "idAplicativo": { "type": "integer" }
+                },
+                "required": ["modulo", "idAplicativo"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Módulo actualizado" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Módulo no encontrado" },
+          "500": { "description": "Error al actualizar el módulo" }
+        }
+      },
+      "delete": {
+        "tags": ["Módulos"],
+        "summary": "Eliminar un módulo por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Módulo eliminado correctamente" },
+          "404": { "description": "Módulo no encontrado" },
+          "500": { "description": "Error al eliminar el módulo" }
+        }
+      }
+    },
+    "/modulos/{id}/rutas": {
+      "get": {
+        "tags": ["Módulos"],
+        "summary": "Obtener rutas relacionadas a un módulo",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de rutas del módulo" },
+          "404": { "description": "Módulo no encontrado" },
+          "500": { "description": "Error al obtener las rutas del módulo" }
+        }
+      }
+    },
+    "/municipios": {
+      "get": {
+        "tags": ["Municipios"],
+        "summary": "Obtener todos los municipios con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de municipios" },
+          "500": { "description": "Error al obtener los municipios" }
+        }
+      },
+      "post": {
+        "tags": ["Municipios"],
+        "summary": "Crear un nuevo municipio",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "idDepartamento": { "type": "integer" }
+                },
+                "required": ["nombre", "idDepartamento"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Municipio creado exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el municipio" }
+        }
+      }
+    },
+    "/municipios/{id}": {
+      "get": {
+        "tags": ["Municipios"],
+        "summary": "Obtener un municipio por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Municipio encontrado" },
+          "404": { "description": "Municipio no encontrado" },
+          "500": { "description": "Error al buscar el municipio" }
+        }
+      },
+      "put": {
+        "tags": ["Municipios"],
+        "summary": "Actualizar un municipio por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "idDepartamento": { "type": "integer" }
+                },
+                "required": ["nombre", "idDepartamento"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Municipio actualizado" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Municipio no encontrado" },
+          "500": { "description": "Error al actualizar el municipio" }
+        }
+      },
+      "delete": {
+        "tags": ["Municipios"],
+        "summary": "Eliminar un municipio por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Municipio eliminado correctamente" },
+          "404": { "description": "Municipio no encontrado" },
+          "500": { "description": "Error al eliminar el municipio" }
+        }
+      }
+    },
+    "/permisos": {
+      "get": {
+        "tags": ["Permisos"],
+        "summary": "Obtener todos los permisos con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista paginada de permisos"
+          },
+          "500": {
+            "description": "Error al obtener los permisos"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Permisos"],
+        "summary": "Crear un nuevo permiso",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 30 },
+                  "idRol": { "type": "integer" },
+                  "idRuta": { "type": "integer" }
+                },
+                "required": ["nombre", "idRol", "idRuta"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Permiso creado exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el permiso" }
+        }
+      }
+    },
+    "/permisos/{id}": {
+      "get": {
+        "tags": ["Permisos"],
+        "summary": "Obtener un permiso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Permiso encontrado" },
+          "404": { "description": "Permiso no encontrado" },
+          "500": { "description": "Error al buscar el permiso" }
+        }
+      },
+      "put": {
+        "tags": ["Permisos"],
+        "summary": "Actualizar un permiso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 30 },
+                  "idRol": { "type": "integer" },
+                  "idRuta": { "type": "integer" }
+                },
+                "required": ["nombre", "idRol", "idRuta"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Permiso actualizado" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Permiso no encontrado" },
+          "500": { "description": "Error al actualizar el permiso" }
+        }
+      },
+      "delete": {
+        "tags": ["Permisos"],
+        "summary": "Eliminar un permiso por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Permiso eliminado correctamente" },
+          "404": { "description": "Permiso no encontrado" },
+          "500": { "description": "Error al eliminar el permiso" }
+        }
+      }
+    },
+    "/personas": {
+      "get": {
+        "tags": ["Personas"],
+        "summary": "Obtener todas las personas con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de personas" },
+          "500": { "description": "Error al obtener las personas" }
+        }
+      },
+      "post": {
+        "tags": ["Personas"],
+        "summary": "Crear una nueva persona",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "telefono": { "type": "string" },
+                  "direccion": { "type": "string" },
+                  "correo": { "type": "string", "format": "email" },
+                  "genero": { "type": "string" },
+                  "idMunicipio": { "type": "integer" },
+                  "cargo": { "type": "string" },
+                  "estado": { "type": "string", "default": "activo" }
+                },
+                "required": [
+                  "nombre",
+                  "telefono",
+                  "direccion",
+                  "correo",
+                  "genero",
+                  "idMunicipio",
+                  "cargo"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Persona creada exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear la persona" }
+        }
+      }
+    },
+    "/personas/{id}": {
+      "get": {
+        "tags": ["Personas"],
+        "summary": "Obtener una persona por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Persona encontrada" },
+          "404": { "description": "Persona no encontrada" },
+          "500": { "description": "Error al buscar la persona" }
+        }
+      },
+      "put": {
+        "tags": ["Personas"],
+        "summary": "Actualizar una persona por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "telefono": { "type": "string" },
+                  "direccion": { "type": "string" },
+                  "correo": { "type": "string", "format": "email" },
+                  "genero": { "type": "string" },
+                  "idMunicipio": { "type": "integer" },
+                  "cargo": { "type": "string" },
+                  "estado": { "type": "string" }
+                },
+                "required": [
+                  "nombre",
+                  "telefono",
+                  "direccion",
+                  "correo",
+                  "genero",
+                  "idMunicipio",
+                  "cargo",
+                  "estado"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Persona actualizada" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Persona no encontrada" },
+          "500": { "description": "Error al actualizar la persona" }
+        }
+      },
+      "delete": {
+        "tags": ["Personas"],
+        "summary": "Eliminar una persona por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Persona eliminada correctamente" },
+          "404": { "description": "Persona no encontrada" },
+          "500": { "description": "Error al eliminar la persona" }
+        }
+      }
+    },
+    "/personas/{id}/matricula": {
+      "get": {
+        "tags": ["Personas"],
+        "summary": "Obtener la matrícula de una persona por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Matrícula encontrada" },
+          "404": { "description": "Persona no encontrada" },
+          "500": {
+            "description": "Error al obtener la matrícula de la persona"
+          }
+        }
+      }
+    },
+    "/programas": {
+      "get": {
+        "tags": ["Programas"],
+        "summary": "Obtener todos los programas con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de programas" },
+          "500": { "description": "Error al obtener los programas" }
+        }
+      },
+      "post": {
+        "tags": ["Programas"],
+        "summary": "Crear un nuevo programa",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "tipo": { "type": "string" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Programa creado exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el programa" }
+        }
+      }
+    },
+    "/programas/{id}": {
+      "get": {
+        "tags": ["Programas"],
+        "summary": "Obtener un programa por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Programa encontrado" },
+          "404": { "description": "Programa no encontrado" },
+          "500": { "description": "Error al buscar el programa" }
+        }
+      },
+      "put": {
+        "tags": ["Programas"],
+        "summary": "Actualizar un programa por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "tipo": { "type": "string" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Programa actualizado" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Programa no encontrado" },
+          "500": { "description": "Error al actualizar el programa" }
+        }
+      },
+      "delete": {
+        "tags": ["Programas"],
+        "summary": "Eliminar un programa por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Programa eliminado correctamente" },
+          "404": { "description": "Programa no encontrado" },
+          "500": { "description": "Error al eliminar el programa" }
+        }
+      }
+    },
+    "/programas/{id}/cursos": {
+      "get": {
+        "tags": ["Programas"],
+        "summary": "Obtener cursos por ID de programa con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de cursos del programa" },
+          "404": { "description": "Programa no encontrado" },
+          "500": { "description": "Error al obtener los cursos del programa" }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Obtener todos los roles con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de roles" },
+          "500": { "description": "Error al obtener los roles" }
+        }
+      },
+      "post": {
+        "tags": ["Roles"],
+        "summary": "Crear un nuevo rol",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 20 },
+                  "idAplicativo": { "type": "integer" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Rol creado exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el rol" }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Obtener un rol por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Rol encontrado" },
+          "404": { "description": "Rol no encontrado" },
+          "500": { "description": "Error al buscar el rol" }
+        }
+      },
+      "put": {
+        "tags": ["Roles"],
+        "summary": "Actualizar un rol por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 20 },
+                  "idAplicativo": { "type": "integer" }
+                },
+                "required": ["nombre"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Rol actualizado" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Rol no encontrado" },
+          "500": { "description": "Error al actualizar el rol" }
+        }
+      },
+      "delete": {
+        "tags": ["Roles"],
+        "summary": "Eliminar un rol por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Rol eliminado correctamente" },
+          "404": { "description": "Rol no encontrado" },
+          "500": { "description": "Error al eliminar el rol" }
+        }
+      }
+    },
+    "/roles/{id}/usuarios": {
+      "get": {
+        "tags": ["Roles"],
+        "summary": "Obtener usuarios relacionados a un rol con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de usuarios del rol" },
+          "404": { "description": "Rol no encontrado" },
+          "500": { "description": "Error al obtener los usuarios del rol" }
+        }
+      }
+    },
+    "/rutas": {
+      "get": {
+        "tags": ["Rutas"],
+        "summary": "Obtener todas las rutas con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de rutas" },
+          "500": { "description": "Error al obtener las rutas" }
+        }
+      },
+      "post": {
+        "tags": ["Rutas"],
+        "summary": "Crear una nueva ruta",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "url": { "type": "string", "maxLength": 100 },
+                  "idModulo": { "type": "integer" }
+                },
+                "required": ["nombre", "url", "idModulo"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Ruta creada exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear la ruta" }
+        }
+      }
+    },
+    "/rutas/{id}": {
+      "get": {
+        "tags": ["Rutas"],
+        "summary": "Obtener una ruta por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Ruta encontrada" },
+          "404": { "description": "Ruta no encontrada" },
+          "500": { "description": "Error al buscar la ruta" }
+        }
+      },
+      "put": {
+        "tags": ["Rutas"],
+        "summary": "Actualizar una ruta por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "url": { "type": "string", "maxLength": 100 },
+                  "idModulo": { "type": "integer" }
+                },
+                "required": ["nombre", "url", "idModulo"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Ruta actualizada" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Ruta no encontrada" },
+          "500": { "description": "Error al actualizar la ruta" }
+        }
+      },
+      "delete": {
+        "tags": ["Rutas"],
+        "summary": "Eliminar una ruta por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Ruta eliminada correctamente" },
+          "404": { "description": "Ruta no encontrada" },
+          "500": { "description": "Error al eliminar la ruta" }
+        }
+      }
+    },
+    "/rutas/{id}/permisos": {
+      "get": {
+        "tags": ["Rutas"],
+        "summary": "Obtener permisos relacionados a una ruta con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de permisos de la ruta" },
+          "404": { "description": "Ruta no encontrada" },
+          "500": { "description": "Error al obtener los permisos de la ruta" }
+        }
+      }
+    },
+    "/sedes": {
+      "get": {
+        "tags": ["Sedes"],
+        "summary": "Obtener todas las sedes con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de sedes" },
+          "500": { "description": "Error al obtener las sedes" }
+        }
+      },
+      "post": {
+        "tags": ["Sedes"],
+        "summary": "Crear una nueva sede",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "idCentro": { "type": "integer" }
+                },
+                "required": ["nombre", "idCentro"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Sede creada exitosamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear la sede" }
+        }
+      }
+    },
+    "/sedes/{id}": {
+      "get": {
+        "tags": ["Sedes"],
+        "summary": "Obtener una sede por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Sede encontrada" },
+          "404": { "description": "Sede no encontrada" },
+          "500": { "description": "Error al buscar la sede" }
+        }
+      },
+      "put": {
+        "tags": ["Sedes"],
+        "summary": "Actualizar una sede por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string", "maxLength": 50 },
+                  "idCentro": { "type": "integer" }
+                },
+                "required": ["nombre", "idCentro"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Sede actualizada" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Sede no encontrada" },
+          "500": { "description": "Error al actualizar la sede" }
+        }
+      },
+      "delete": {
+        "tags": ["Sedes"],
+        "summary": "Eliminar una sede por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Sede eliminada correctamente" },
+          "404": { "description": "Sede no encontrada" },
+          "500": { "description": "Error al eliminar la sede" }
+        }
+      }
+    },
+    "/sedes/{id}/ambientes": {
+      "get": {
+        "tags": ["Sedes"],
+        "summary": "Obtener ambientes relacionados a una sede con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de ambientes" },
+          "404": { "description": "Sede no encontrada" },
+          "500": { "description": "Error al obtener los ambientes de la sede" }
+        }
+      }
+    },
+    "/sedes/{id}/areas": {
+      "get": {
+        "tags": ["Sedes"],
+        "summary": "Obtener áreas relacionadas a una sede con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista paginada de áreas" },
+          "404": { "description": "Sede no encontrada" },
+          "500": { "description": "Error al obtener las áreas de la sede" }
+        }
+      }
+    },
+    "/usuarios": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Obtener todos los usuarios con paginación",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "default": 1 }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": { "type": "integer", "default": 10 }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Lista de usuarios paginada" },
+          "500": { "description": "Error al obtener los usuarios" }
+        }
+      },
+      "post": {
+        "tags": ["Usuarios"],
+        "summary": "Crear un nuevo usuario",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": { "type": "string", "maxLength": 30 },
+                  "password": { "type": "string", "maxLength": 20 },
+                  "idPersona": { "type": "integer" },
+                  "idAplicativo": { "type": "integer", "nullable": true },
+                  "idRol": { "type": "integer", "nullable": true }
+                },
+                "required": ["login", "password", "idPersona"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuario creado correctamente" },
+          "400": { "description": "Datos inválidos" },
+          "500": { "description": "Error al crear el usuario" }
+        }
+      }
+    },
+    "/usuarios/{id}": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Obtener un usuario por ID",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Usuario encontrado" },
+          "404": { "description": "Usuario no encontrado" },
+          "500": { "description": "Error al buscar el usuario" }
+        }
+      },
+      "put": {
+        "tags": ["Usuarios"],
+        "summary": "Actualizar un usuario",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": { "type": "string", "maxLength": 30 },
+                  "password": { "type": "string", "maxLength": 20 },
+                  "idPersona": { "type": "integer" },
+                  "idAplicativo": { "type": "integer", "nullable": true },
+                  "idRol": { "type": "integer", "nullable": true }
+                },
+                "required": ["login", "password", "idPersona"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Usuario actualizado correctamente" },
+          "400": { "description": "Datos inválidos" },
+          "404": { "description": "Usuario no encontrado" },
+          "500": { "description": "Error al actualizar el usuario" }
+        }
+      },
+      "delete": {
+        "tags": ["Usuarios"],
+        "summary": "Eliminar un usuario",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Usuario eliminado correctamente" },
+          "404": { "description": "Usuario no encontrado" },
+          "500": { "description": "Error al eliminar el usuario" }
+        }
+      }
+    }
+  }
+}
