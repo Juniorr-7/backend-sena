@@ -6,13 +6,14 @@ import {
   updatePermiso,
   deletePermiso,
 } from '../controllers/permisos.controller.js';
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
 
 const router = Router();
 
-router.get('/', getAllPermisos);
-router.get('/:id', getPermisoById);
-router.post('/', createPermiso);
-router.put('/:id', updatePermiso);
-router.delete('/:id', deletePermiso);
+router.get('/', verifyToken, getAllPermisos);
+router.get('/:id', verifyToken, getPermisoById);
+router.post('/', verifyToken, createPermiso);
+router.put('/:id', verifyToken, updatePermiso);
+router.delete('/:id', verifyToken, deletePermiso);
 
 export default { prefix: "/permisos", router };

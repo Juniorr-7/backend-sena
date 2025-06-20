@@ -7,15 +7,16 @@ import {
   deletePersona,
   getMatriculaByPersonaId,
 } from '../controllers/personas.controller.js';
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
 
 const router = Router();
 
-router.get('/', getAllPersonas);
-router.get('/:id', getPersonaById);
-router.post('/', createPersona);
-router.put('/:id', updatePersona);
-router.delete('/:id', deletePersona);
+router.get('/', verifyToken, getAllPersonas);
+router.get('/:id', verifyToken, getPersonaById);
+router.post('/', verifyToken, createPersona);
+router.put('/:id', verifyToken, updatePersona);
+router.delete('/:id', verifyToken, deletePersona);
 
-router.get('/:id/matricula', getMatriculaByPersonaId);
+router.get('/:id/matricula', verifyToken, getMatriculaByPersonaId);
 
 export default { prefix: "/personas", router };

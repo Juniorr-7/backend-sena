@@ -8,16 +8,17 @@ import {
   getAmbientesBySedeId,
   getAreasBySedeId,
 } from '../controllers/sedes.controller.js';
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
 
 const router = Router();
 
-router.get('/', getAllSedes);
-router.get('/:id', getSedeById);
-router.post('/', createSede);
-router.put('/:id', updateSede);
-router.delete('/:id', deleteSede);
+router.get('/', verifyToken, getAllSedes);
+router.get('/:id', verifyToken, getSedeById);
+router.post('/', verifyToken, createSede);
+router.put('/:id', verifyToken, updateSede);
+router.delete('/:id', verifyToken, deleteSede);
 
-router.get('/:id/ambientes', getAmbientesBySedeId);
-router.get('/:id/areas', getAreasBySedeId);
+router.get('/:id/ambientes', verifyToken, getAmbientesBySedeId);
+router.get('/:id/areas', verifyToken, getAreasBySedeId);
 
 export default { prefix: '/sedes', router };

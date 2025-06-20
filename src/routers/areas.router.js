@@ -8,16 +8,17 @@ import {
   getSedeByAreaId,
   getCursosByAreaId
 } from '../controllers/areas.controller.js'
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js'
 
 const router = Router()
 
-router.get('/', getAllAreas)
-router.get('/:id', getAreaById)
-router.post('/', createArea)
-router.put('/:id', updateArea)
-router.delete('/:id', deleteArea)
+router.get('/', verifyToken, getAllAreas)
+router.get('/:id', verifyToken, getAreaById)
+router.post('/', verifyToken, createArea)
+router.put('/:id', verifyToken, updateArea)
+router.delete('/:id', verifyToken, deleteArea)
 
-router.get('/:id/sede', getSedeByAreaId)
-router.get('/:id/cursos', getCursosByAreaId)
+router.get('/:id/sede', verifyToken, getSedeByAreaId)
+router.get('/:id/cursos', verifyToken, getCursosByAreaId)
 
 export default { prefix: "/areas", router }

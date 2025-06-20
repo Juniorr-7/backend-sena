@@ -6,13 +6,14 @@ import {
   updateUsuario,
   deleteUsuario,
 } from '../controllers/usuarios.controller.js';
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
 
 const router = Router();
 
-router.get('/', getAllUsuarios);
-router.get('/:id', getUsuarioById);
-router.post('/', createUsuario);
-router.put('/:id', updateUsuario);
-router.delete('/:id', deleteUsuario);
+router.get('/', verifyToken, getAllUsuarios);
+router.get('/:id', verifyToken, getUsuarioById);
+router.post('/', verifyToken, createUsuario);
+router.put('/:id', verifyToken, updateUsuario);
+router.delete('/:id', verifyToken, deleteUsuario);
 
 export default { prefix: "/usuarios", router };

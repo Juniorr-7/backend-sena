@@ -8,16 +8,17 @@ import {
   getMunicipioByAmbienteId,
   getSedeByAmbienteId
 } from '../controllers/ambientes.controller.js'
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js'
 
 const router = Router()
 
-router.get('/', getAllAmbientes)
-router.get('/:id', getAmbienteById)
-router.post('/', createAmbiente)
-router.put('/:id', updateAmbiente)
-router.delete('/:id', deleteAmbiente)
+router.get('/', verifyToken, getAllAmbientes)
+router.get('/:id', verifyToken, getAmbienteById)
+router.post('/', verifyToken, createAmbiente)
+router.put('/:id', verifyToken, updateAmbiente)
+router.delete('/:id', verifyToken, deleteAmbiente)
 
-router.get('/:id/municipio', getMunicipioByAmbienteId)
-router.get('/:id/sede', getSedeByAmbienteId)
+router.get('/:id/municipio', verifyToken, getMunicipioByAmbienteId)
+router.get('/:id/sede', verifyToken, getSedeByAmbienteId)
 
 export default { prefix: "/ambientes", router }

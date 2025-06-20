@@ -7,15 +7,16 @@ import {
   deletePrograma,
   getCursosByProgramaId,
 } from '../controllers/programas.controller.js';
+import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
 
 const router = Router();
 
-router.get('/', getAllProgramas);
-router.get('/:id', getProgramaById);
-router.post('/', createPrograma);
-router.put('/:id', updatePrograma);
-router.delete('/:id', deletePrograma);
+router.get('/', verifyToken, getAllProgramas);
+router.get('/:id', verifyToken, getProgramaById);
+router.post('/', verifyToken, createPrograma);
+router.put('/:id', verifyToken, updatePrograma);
+router.delete('/:id', verifyToken, deletePrograma);
 
-router.get('/:id/cursos', getCursosByProgramaId);
+router.get('/:id/cursos', verifyToken, getCursosByProgramaId);
 
 export default { prefix: '/programas', router };
