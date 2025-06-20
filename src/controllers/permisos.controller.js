@@ -46,15 +46,15 @@ const getPermisoById = async (req, res) => {
 };
 
 const createPermiso = async (req, res) => {
-  const { usuario, idRol, idRuta } = req.body;
+  const { nombre, idRol, idRuta } = req.body;
 
   try {
-    if (!usuario || !idRol || !idRuta) {
+    if (!nombre || nombre.length > 30 || !idRol || !idRuta) {
       return res.status(400).json({ error: 'Todos los campos son requeridos' });
     }
 
     const nuevo = await prisma.permisos.create({
-      data: { usuario, idRol, idRuta },
+      data: { nombre, idRol, idRuta },
     });
 
     res.status(201).json(nuevo);
@@ -65,9 +65,9 @@ const createPermiso = async (req, res) => {
 
 const updatePermiso = async (req, res) => {
   const { id } = req.params;
-  const { usuario, idRol, idRuta } = req.body;
+  const { nombre, idRol, idRuta } = req.body;
 
-  if (!usuario || !idRol || !idRuta) {
+  if (!nombre || nombre.length > 30 || !idRol || !idRuta) {
     return res.status(400).json({ error: 'Todos los campos son requeridos' });
   }
 
@@ -82,7 +82,7 @@ const updatePermiso = async (req, res) => {
 
     const actualizado = await prisma.permisos.update({
       where: { idPermiso: parseInt(id) },
-      data: { usuario, idRol, idRuta },
+      data: { nombre, idRol, idRuta },
     });
 
     res.json(actualizado);
