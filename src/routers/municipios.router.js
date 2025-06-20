@@ -7,13 +7,14 @@ import {
   deleteMunicipio,
 } from '../controllers/municipios.controller.js';
 import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
+import { verifyPermiso } from '../middlewares/permiso.middleware.js';
 
 const router = Router();
 
-router.get('/', verifyToken, getAllMunicipios);
-router.get('/:id', verifyToken, getMunicipioById);
-router.post('/', verifyToken, createMunicipio);
-router.put('/:id', verifyToken, updateMunicipio);
-router.delete('/:id', verifyToken, deleteMunicipio);
+router.post('/', verifyToken, verifyPermiso(71), createMunicipio);
+router.get('/', verifyToken, verifyPermiso(72), getAllMunicipios);
+router.get('/:id', verifyToken, verifyPermiso(73), getMunicipioById);
+router.put('/:id', verifyToken, verifyPermiso(74), updateMunicipio);
+router.delete('/:id', verifyToken, verifyPermiso(75), deleteMunicipio);
 
 export default { prefix: "/municipios", router };

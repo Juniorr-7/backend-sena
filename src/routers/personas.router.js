@@ -8,14 +8,15 @@ import {
   getMatriculaByPersonaId,
 } from '../controllers/personas.controller.js';
 import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
+import { verifyPermiso } from '../middlewares/permiso.middleware.js';
 
 const router = Router();
 
-router.get('/', verifyToken, getAllPersonas);
-router.get('/:id', verifyToken, getPersonaById);
-router.post('/', verifyToken, createPersona);
-router.put('/:id', verifyToken, updatePersona);
-router.delete('/:id', verifyToken, deletePersona);
+router.post('/', verifyToken, verifyPermiso(26), createPersona);
+router.get('/', verifyToken, verifyPermiso(27), getAllPersonas);
+router.get('/:id', verifyToken, verifyPermiso(28), getPersonaById);
+router.put('/:id', verifyToken, verifyPermiso(29), updatePersona);
+router.delete('/:id', verifyToken, verifyPermiso(30), deletePersona);
 
 router.get('/:id/matricula', verifyToken, getMatriculaByPersonaId);
 

@@ -7,13 +7,14 @@ import {
   deleteUsuario,
 } from '../controllers/usuarios.controller.js';
 import { verifyToken } from '../middlewares/jsonwebtoken.middleware.js';
+import { verifyPermiso } from '../middlewares/permiso.middleware.js';
 
 const router = Router();
 
-router.get('/', verifyToken, getAllUsuarios);
-router.get('/:id', verifyToken, getUsuarioById);
-router.post('/', verifyToken, createUsuario);
-router.put('/:id', verifyToken, updateUsuario);
-router.delete('/:id', verifyToken, deleteUsuario);
+router.post('/', verifyToken, verifyPermiso(21), createUsuario);
+router.get('/', verifyToken, verifyPermiso(22), getAllUsuarios);
+router.get('/:id', verifyToken, verifyPermiso(23), getUsuarioById);
+router.put('/:id', verifyToken, verifyPermiso(24), updateUsuario);
+router.delete('/:id', verifyToken, verifyPermiso(25), deleteUsuario);
 
 export default { prefix: "/usuarios", router };
