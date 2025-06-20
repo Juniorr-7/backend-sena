@@ -62,7 +62,7 @@ model rutas {
 
 model permisos {
   idPermiso Int @id @default(autoincrement())
-  usuario Int
+  nombre String @db.VarChar(30)
   idRol Int
   idRuta Int
   rol roles @relation(fields: [idRol], references: [idRol])
