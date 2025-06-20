@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 // 1. Obtener todos los usuarios con paginación
@@ -59,8 +60,10 @@ const createUsuario = async (req, res) => {
       return res.status(400).json({ error: 'Login y password son requeridos con longitudes válidas' });
     }
 
+    const hash = await bcrypt.hash(password, 12);
+
     const nuevo = await prisma.usuarios.create({
-      data: { login, password, idPersona, idAplicativo, idRol },
+      data: { login, password: hash, idPersona, idAplicativo, idRol },
     });
 
     res.status(201).json(nuevo);
@@ -88,9 +91,11 @@ const updateUsuario = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
+    const hash = await bcrypt.hash(password, 12);
+
     const actualizado = await prisma.usuarios.update({
       where: { idUsuario: parseInt(id) },
-      data: { login, password, idPersona, idAplicativo, idRol },
+      data: { login, password: hash, idPersona, idAplicativo, idRol },
     });
 
     res.json(actualizado);

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import bcrypt from 'bcrypt';
 dotenv.config();
 
 const prisma = new PrismaClient();
@@ -17,7 +18,9 @@ const login = async (req, res) => {
         });
 
         if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-        if (usuario.password !== password) return res.status(401).json({ error: 'Contraseña incorrecta' });
+
+        const passwordCoincidence = await bcrypt.compare(password, usuario.password);
+        if (!passwordCoincidence) return res.status(401).json({ error: 'Contraseña incorrecta' });
 
         const token = jwt.sign({ sub: usuario.idUsuario, rol: usuario.idRol }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRATION || '1h' });
 

@@ -32,7 +32,7 @@ CREATE TABLE `accesos` (
   PRIMARY KEY (`idAcceso`),
   KEY `accesos_idUsuario_fkey` (`idUsuario`),
   CONSTRAINT `accesos_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `usuarios` (`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,6 @@ CREATE TABLE `accesos` (
 
 LOCK TABLES `accesos` WRITE;
 /*!40000 ALTER TABLE `accesos` DISABLE KEYS */;
-INSERT INTO `accesos` VALUES (1,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbCI6MSwiaWF0IjoxNzUwMzgxNDg1LCJleHAiOjE3NTAzODUwODV9.HVZlnDngm0mqMngkwxX0xKLR8kpJwlq3jQ1YpuDrhUc',1,'2025-06-20 01:04:45.213',NULL,'activo'),(2,'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInJvbCI6MSwiaWF0IjoxNzUwMzg1MDk2LCJleHAiOjE3NTAzODg2OTZ9.2UBH7oGgbhwtTkFvY8jrJAiFOuO0684p2_2fDjCj-wM',1,'2025-06-20 02:04:56.023',NULL,'activo');
 /*!40000 ALTER TABLE `accesos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -466,7 +465,7 @@ DROP TABLE IF EXISTS `usuarios`;
 CREATE TABLE `usuarios` (
   `idUsuario` int NOT NULL AUTO_INCREMENT,
   `login` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `idAplicativo` int NOT NULL,
   `idRol` int NOT NULL,
   `idPersona` int NOT NULL,
@@ -487,7 +486,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Juniorr-7','contrasena123',1,1,1);
+INSERT INTO `usuarios` VALUES (1,'Juniorr-7','$2a$12$AeiC8JUEk/eYb2k8RIqkL.bthBuayGhmvnE6ZSVU/RRpfuQPjYf8.',1,1,1);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -500,4 +499,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-06-19 21:16:01
+-- Dump completed on 2025-06-19 21:32:26
